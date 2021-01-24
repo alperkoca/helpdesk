@@ -1,0 +1,43 @@
+.card-header > .nav-tabs > .nav-item .nav-link.active {
+  border-top: 3px solid #007bff !important;
+  color:#495057;
+}
+
+.card.card-outline-tabs .card-header .nav-link {
+  border-top: 3px solid transparent;
+  background-color: transparent;
+  color: #007bff;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+  border-color: #e9ecef #e9ecef #dee2e6;
+  outline: none;
+}
+.card-header > .nav-tabs > .nav-item .nav-link:hover {
+  border-top: 3px solid #e9ecef !important;
+}
+
+.card-header > .nav-tabs > .nav-item .nav-link.active:focus{
+    border-bottom: 1px solid white;
+}
+
+.react-datepicker-wrapper{
+  padding: 0;
+  border:0;
+  display: inline;
+}
+
+.editor-class{
+  border:1px solid #F1F1F1;
+  height: 500px;
+}
+
+.editor-class>.DraftEditor-root{
+  height: 207px;
+}
+
+.popupClassName{
+  height: 210px;
+  width: 300px;
+}

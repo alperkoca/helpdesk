@@ -1,0 +1,6 @@
+export const UserActionTypes = {
+    FETCH_USERS: 'FETCH_USERS',
+    FETCH_USER: 'FETCH_USER',
+    CREATE_USER: 'CREATE_USER',
+    UPDATE_USER: 'UPDATE_USER'
+}
