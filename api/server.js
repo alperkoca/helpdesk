@@ -4,7 +4,7 @@ const router = require("./routes/index");
 const connectDatabase = require("./helpers/database/connectDatabase");
 const customErrorHandler = require("./middlewares/errors/customErrorHandler");
 const cors = require("cors");
-
+const path = require("path");
 
 
 dotenv.config({
@@ -24,10 +24,17 @@ app.use(express.json());
 connectDatabase();
 
 //Router
+
+
 app.use("/api", router);
+
 
 //Error Handle
 app.use(customErrorHandler);
+
+app.use(express.static(path.join(__dirname, "public")));
+
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, ()=>{

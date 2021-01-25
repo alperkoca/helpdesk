@@ -1,6 +1,7 @@
 import axios from 'axios'
+import { URLS } from "../constants/urls";
 
-const API = axios.create({baseURL: 'http://localhost:5001/api'});
+const API = axios.create({baseURL: URLS.axiosBaseURL});
 
 API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')){
@@ -37,3 +38,5 @@ export const getUserRoles = () => API.get('/userroles');
 export const singIn = (formData) => API.post('/auth/singin', formData);
 export const singUp = (formData) => API.post('/auth/signup', formData);
 
+//upload draft image
+export const draftImageUpload = (formData) =>  API.post('/ticket/uploaddraftimage', formData);
