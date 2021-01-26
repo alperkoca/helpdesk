@@ -1,31 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js'
+import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import * as api from '../../api/index';
 import { URLS } from "../../constants/urls";
 
-const TextEditor = ({ setEditorText }) => {
+const TextEditor = ({ setEditorText, handleChangeEditor }) => {
 
     const handleEditorState = (state) => {
         const blocks = convertToRaw(state.getCurrentContent());
         const data = draftToHtml(blocks);
         setEditorText(data);
+        handleChangeEditor();
     }
 
 
     const uploadCallback = (file) => {
         return new Promise((resolve, reject) => {
-            // const formData = new FormData();
-            // formData.append("draft_image", file);
-            // const fonsk = async () => { return await api.draftImageUpload(formData); };
             postImage(file).then(data => resolve({ data: { link: `${URLS.axiosBaseURL}/draft_images/${data}` } }));
         });
     }
 
     const handlePastedText = (text, html) => {
-        console.log(text, html);
+        
     }
 
     const handlePastedFiles = (file, text, src) => {
@@ -39,8 +37,6 @@ const TextEditor = ({ setEditorText }) => {
             const fonsk = async () => { return await api.draftImageUpload(formData); };
             fonsk().then(data => resolve(data.data.data));
         });
-        
-
     }
 
     return (
