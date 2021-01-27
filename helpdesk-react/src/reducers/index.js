@@ -5,6 +5,7 @@ import status from './status'
 import priority from './priority';
 import user from './user';
 import userRoles from './userrole';
+import ticket from './ticket';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
     status,
     priority,
     user,
-    userRoles
+    userRoles,
+    ticket
 });

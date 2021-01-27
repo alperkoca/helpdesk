@@ -28,6 +28,7 @@
   display: inline;
 }
 
+
 .editor-class{
   border:1px solid #F1F1F1;
   height: 500px;
@@ -35,6 +36,10 @@
 
 .editor-class>.DraftEditor-root{
   height: 207px;
+}
+
+.DraftEditor-editorContainer{
+  z-index: 0;
 }
 
 .popupClassName{

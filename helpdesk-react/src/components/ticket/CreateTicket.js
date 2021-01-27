@@ -6,9 +6,12 @@ import { getUsers } from '../../api/index';
 import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
+import { createTicket } from '../../actions/ticket';
+import TextEditor from '../helpers/TextEditor';
+import { useHistory } from 'react-router-dom';
 
 import "react-datepicker/dist/react-datepicker.css";
-import TextEditor from '../helpers/TextEditor';
+
 
 const initialState = { mainCategoryId: "", category: "", summary: "", assignee: "", attachment: null, dueDate: Date.now(), priority: "", description: "" };
 
@@ -18,6 +21,7 @@ const CreateTicket = () => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState(initialState);
     const [editorText, setEditorText] = useState("");
+    const history = useHistory()
 
     const categories = useSelector((state) => state.category);
     const priorities = useSelector((state) => state.priority);
@@ -25,7 +29,6 @@ const CreateTicket = () => {
     const priorityOptions = priorities.map(x => ({ value: x._id, label: x.name, foreColor: x.color }));
 
     const priorityColorOptions = {
-
         option: (styles, { data }) => {
             return {
                 ...styles,
@@ -48,12 +51,15 @@ const CreateTicket = () => {
     }, // eslint-disable-next-line
         []);
 
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(createTicket(formData, history));
+    }
+
     const handleChange = (e) => {
-        console.log(e);
         if (e.target.type === "file") {
-            if(e.target.files.length > 0)
-            {
-                console.log(e.target.files[0]);
+            if (e.target.files.length > 0) {
                 setFormData({ ...formData, [e.target.name]: e.target.files[0] });
             }
             else setFormData({ ...formData, [e.target.name]: null });
@@ -68,7 +74,7 @@ const CreateTicket = () => {
     }
 
     const handlePriorityChange = (e) => {
-        setFormData({ ...formData, assignee: e.value });
+        setFormData({ ...formData, priority: e.value });
     }
 
     const loadOptions = (inputValue, callback) => {
@@ -88,53 +94,57 @@ const CreateTicket = () => {
             <div className="col-lg-12">
                 <div className="card">
                     <div className="card-body">
-
-                        <div className="form-group">
-                            <label htmlFor="mainCategory">Main Category</label>
-                            <select id="mainCategory" name="mainCategoryId" className="form-control" onChange={handleChange}>
-                                <option></option>
-                                {
-                                    categories.filter(x => !x.mainCategory).map((c) => <option value={c._id} key={c._id}>{c.name}</option>)
-                                }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="category">Category</label>
-                            <select id="category" className="form-control" name="category" onChange={handleChange}>
-                                <option></option>
-                                {
-                                    formData.mainCategoryId &&
-                                    categories.find(x => x._id === formData.mainCategoryId)?.categories?.map((c) => <option value={c._id} key={c._id}>{c.name}</option>)
-                                }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="summary">Summary</label>
-                            <input type="text" className="form-control" id="summary" name="summary" placeholder="Summary" onChange={handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="assignee">Assignee</label>
-                            <AsyncSelect cacheOptions loadOptions={loadOptions} name="assignee" defaultOptions onChange={handleAssigneeChange} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="attachment">Attachment</label>
-                            <input type="file" id="attachment" name="attachment" className="form-control" onChange={handleChange} ></input>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="dueDate">Due Date</label>
-                            <DatePicker className="form-control" selected={formData.dueDate} onChange={date => setFormData({ ...formData, dueDate: date })} dateFormat="dd.MM.yyyy" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="priority">Priority</label>
-                            <Select options={priorityOptions} styles={priorityColorOptions} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="description">Description</label>
-                            <TextEditor setEditorText={setEditorText} handleChangeEditor={handleChangeEditor} />
-                        </div>
-                        {
-                            JSON.stringify(formData)
-                        }
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="mainCategory">Main Category</label>
+                                <select id="mainCategory" name="mainCategoryId" className="form-control" onChange={handleChange}>
+                                    <option></option>
+                                    {
+                                        categories.filter(x => !x.mainCategory).map((c) => <option value={c._id} key={c._id}>{c.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="category">Category</label>
+                                <select id="category" className="form-control" name="category" onChange={handleChange}>
+                                    <option></option>
+                                    {
+                                        formData.mainCategoryId &&
+                                        categories.find(x => x._id === formData.mainCategoryId)?.categories?.map((c) => <option value={c._id} key={c._id}>{c.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="summary">Summary</label>
+                                <input type="text" className="form-control" id="summary" name="summary" placeholder="Summary" onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="assignee">Assignee</label>
+                                <AsyncSelect cacheOptions loadOptions={loadOptions} name="assignee" defaultOptions onChange={handleAssigneeChange} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="attachment">Attachment</label>
+                                <input type="file" id="attachment" name="attachment" className="form-control" onChange={handleChange} ></input>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="dueDate">Due Date</label>
+                                <DatePicker className="form-control" selected={formData.dueDate} onChange={date => setFormData({ ...formData, dueDate: date })} dateFormat="dd.MM.yyyy" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="priority">Priority</label>
+                                <Select options={priorityOptions} styles={priorityColorOptions} onChange={handlePriorityChange} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="description">Description</label>
+                                <TextEditor setEditorText={setEditorText} handleChangeEditor={handleChangeEditor} />
+                            </div>
+                            {
+                                JSON.stringify(formData)
+                            }
+                            <div class="row justify-content-end">
+                                <button type="submit" className="btn btn-primary">Create</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

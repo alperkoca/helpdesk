@@ -1,99 +1,68 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getTickets } from '../../actions/ticket';
+import {Link, useHistory } from 'react-router-dom';
+import moment from 'moment';
 
-class TicketList extends Component {
-    
-    render() {
-        return <div className="card">
-        <div className="card-body">
-          <table className="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th>Rendering engine</th>
-              <th>Browser</th>
-              <th>Platform(s)</th>
-              <th>Engine version</th>
-              <th>CSS grade</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 4.0
-              </td>
-              <td>Win 95+</td>
-              <td> 4</td>
-              <td>X</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 5.0
-              </td>
-              <td>Win 95+</td>
-              <td>5</td>
-              <td>C</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 5.5
-              </td>
-              <td>Win 95+</td>
-              <td>5.5</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 6
-              </td>
-              <td>Win 98+</td>
-              <td>6</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet Explorer 7</td>
-              <td>Win XP SP2+</td>
-              <td>7</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>AOL browser (AOL desktop)</td>
-              <td>Win XP</td>
-              <td>6</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <td>Gecko</td>
-              <td>Firefox 1.0</td>
-              <td>Win 98+ / OSX.2+</td>
-              <td>1.7</td>
-              <td>A</td>
-            </tr>
-            <tr>
-              <td>Gecko</td>
-              <td>Firefox 1.5</td>
-              <td>Win 98+ / OSX.2+</td>
-              <td>1.8</td>
-              <td>A</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-              <th>Rendering engine</th>
-              <th>Browser</th>
-              <th>Platform(s)</th>
-              <th>Engine version</th>
-              <th>CSS grade</th>
-            </tr>
-            </tfoot>
-          </table>
-        </div>
-      </div>
+const TicketList = () => {
+
+  const dispatch = useDispatch();
+  const tickets = useSelector((state) => state.ticket);
+  const history = useHistory();
+
+  useEffect(() => {
+    dispatch(getTickets());
+  }, // eslint-disable-next-line
+    [])
+
+    const handleRowClick = (id) => {
+      history.push("/tickets/" + id);
     }
+
+  return <div className="card">
+    <div className="card-body">
+      <div className="table-responsive">
+        <table className="table table-sm table-bordered table-hover" style={{ fontSize: "12px" }}>
+          <thead>
+            <tr>
+              <th>Ticket<br />Number</th>
+              <th>Create Date</th>
+              <th style={{ minWidth: "230px" }}>Category</th>
+              <th style={{ minWidth: "130px" }}>Creator</th>
+              <th style={{ minWidth: "500px" }}>Summary</th>
+              <th>Status</th>
+              <th style={{ minWidth: "130px" }}>Assignee</th>
+              <th>Replies</th>
+              <th style={{ minWidth: "130px" }}>Last Replier</th>
+              <th>Last Reply Date</th>
+              <th>Priority</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tickets.map(ticket =>
+                <tr key={ticket._id}>
+                  <td>{ticket.ticketNumber}</td>
+                  <td>{moment(ticket.createdAt).format("DD.MM.yyyy")}</td>
+                  <td>{`${ticket.category.mainCategory.name} -> ${ticket.category.name}`}</td>
+                  <td>{ticket.createdUser.firstLastName}</td>
+                  <td><Link to={`/tickets/${ticket._id}`}>{ticket.summary}</Link> </td>
+                  <td><span style={{ color: ticket.status.color }}>{ticket.status.name}</span></td>
+                  <td>{ticket.assignee.firstLastName}</td>
+                  <td>Replies</td>
+                  <td>Last Replier</td>
+                  <td>Last Activity Date</td>
+                  <td><span style={{ color: ticket.priority.color }}>{ticket.priority.name}</span></td>
+                  <td><span style={{ color: moment().isAfter(ticket.dueDate) ? "red" : "" }}> {moment(ticket.dueDate).format("DD.MM.yyyy")}</span></td>
+                </tr>
+              )
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 }
 
 

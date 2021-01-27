@@ -40,3 +40,7 @@ export const singUp = (formData) => API.post('/auth/signup', formData);
 
 //upload draft image
 export const draftImageUpload = (formData) =>  API.post('/ticket/uploaddraftimage', formData);
+
+//ticket
+export const createTicket = (formData) => API.post('/ticket', formData);
+export const getTickets = () => API.get('/ticket');

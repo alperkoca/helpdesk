@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const TicketSchema = new Schema({
     ticketNumber: {
         type: String,
-        required: [true, "Please provide a Ticket Number"]
+        required: [true, "Please provide a Ticket Number"],
     },
     category: {
         type: mongoose.Schema.ObjectId,
@@ -17,18 +17,11 @@ const TicketSchema = new Schema({
         required: [true, "Please provide a Owner"],
         ref: "User"
     },
-    assignee: [{
-        user: {
-            type: mongoose.Schema.ObjectId,
-            required: [true, "Please provide a Assignee User"],
-            ref: "User"
-        },
-        sendAlert: {
-            type: Boolean,
-            default: true
-        }
-    }
-    ],
+    assignee: {
+        type: mongoose.Schema.ObjectId,
+        required: [true, "Please provide a Assignee User"],
+        ref: "User"
+    },
     priority: {
         type: mongoose.Schema.ObjectId,
         required: [true, "Please provide a Priority"],
@@ -39,12 +32,17 @@ const TicketSchema = new Schema({
         required: [true, "Please provide a Summary"],
         minlength: [6, "Please provide a summary with min length 6"],
     },
+    description: {
+        type: String,
+        required: [true, "Please provide a Description"]
+    },
     isClosed: {
         type: Boolean,
         default: 0
     },
     closedDate: Date,
     dueDate: Date,
+    attachment: String,
     status: {
         type: mongoose.Schema.ObjectId,
         required: [true, "Please provide a Status"],
@@ -65,7 +63,18 @@ const TicketSchema = new Schema({
     updatedUser: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
-    }
+    },
+    watcher: [{
+        user: {
+            type: mongoose.Schema.ObjectId,
+            required: [true, "Please provide a Assignee User"],
+            ref: "User"
+        },
+        sendAlert: {
+            type: Boolean,
+            default: true
+        }
+    }],
 });
 
 module.exports = mongoose.model("Ticket", TicketSchema);

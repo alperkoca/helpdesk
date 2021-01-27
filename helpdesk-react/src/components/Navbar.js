@@ -59,14 +59,6 @@ const Navbar = () => {
             </ActiveLink>
           </li>
           <li className="nav-item">
-            <a href="#a" className="nav-link">
-              <i className="nav-icon fab fa-uncharted"></i>
-              <p>
-                Applications
-                  </p>
-            </a>
-          </li>
-          <li className="nav-item">
           <Link to="/users" className="nav-link">
               <i className="nav-icon fas fa-users"></i>
               <p>
