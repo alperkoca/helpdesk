@@ -83,14 +83,6 @@ const Navbar = () => {
                   </p>
             </Link>
           </li>
-          <li className="nav-item">
-            <a href="#a" className="nav-link">
-              <i className="nav-icon fas fa-cogs"></i>
-              <p>
-                Settings
-                  </p>
-            </a>
-          </li>
         </ul>
       </nav>
 

@@ -19,7 +19,7 @@ class Content extends Component {
     return <React.Fragment>
       <Switch>
         <Route path="/tickets" exact={true} render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Ticket List"> <TicketList /></ContentWrapper>} />
-        <Route path="/tickets/:id" exact={true} render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Ticket Detail" backText="Ticket List" backTo="/tickets"> <TicketDetail {...props} {...routeProps} /></ContentWrapper>} />
+        <Route path="/ticketdetail/:id" exact={true} render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Ticket Detail" backText="Ticket List" backTo="/tickets"> <TicketDetail {...props} {...routeProps} /></ContentWrapper>} />
         <Route path="/tickets/create" exact={true} render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Create Ticket"><CreateTicket /></ContentWrapper>} />
         <Route path="/category" exact={true} render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Category List"><CategoryList /></ContentWrapper>} />
         <Route path="/category/add" render={(routeProps, props) => <ContentWrapper {...props} {...routeProps} title="Create Category" backText="Category List" backTo="/category"><CategoryAdd /></ContentWrapper>} />

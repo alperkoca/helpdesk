@@ -47,7 +47,7 @@ const TicketList = () => {
                   <td>{moment(ticket.createdAt).format("DD.MM.yyyy")}</td>
                   <td>{`${ticket.category.mainCategory.name} -> ${ticket.category.name}`}</td>
                   <td>{ticket.createdUser.firstLastName}</td>
-                  <td><Link to={`/tickets/${ticket._id}`}>{ticket.summary}</Link> </td>
+                  <td><Link to={`/ticketdetail/${ticket._id}`}>{ticket.summary}</Link> </td>
                   <td><span style={{ color: ticket.status.color }}>{ticket.status.name}</span></td>
                   <td>{ticket.assignee.firstLastName}</td>
                   <td>Replies</td>
